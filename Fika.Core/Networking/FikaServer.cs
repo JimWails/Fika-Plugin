@@ -227,11 +227,19 @@ namespace Fika.Core.Networking
 
 			string[] Ips = [];
 
-			foreach (string ip in FikaPlugin.Instance.LocalIPs)
+			if (FikaPlugin.ForceBindIP.Value != "Disabled")
 			{
-				if (ValidateLocalIP(ip))
+				if (ValidateLocalIP(FikaPlugin.ForceBindIP.Value))
 				{
-					Ips = [MyExternalIP, ip];
+					Ips = [MyExternalIP, FikaPlugin.ForceBindIP.Value];
+				}
+			} else {
+				foreach (string ip in FikaPlugin.Instance.LocalIPs)
+				{
+					if (ValidateLocalIP(ip))
+					{
+						Ips = [MyExternalIP, ip];
+					}
 				}
 			}
 
